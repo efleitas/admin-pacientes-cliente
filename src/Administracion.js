@@ -52,18 +52,18 @@ class FixedMenuLayout extends Component {
           <Header as="h3">Datos personales</Header>
           <Form>
             <Segment.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Nombres' placeholder='Nombres' width={8} />
                 <Form.Input label='Apellidos' placeholder='Apellidos' width={8} />     
               </Form.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Dni' placeholder='Dni' width={4} />
                 <Form.Input label='Nacionalidad' placeholder='Nacionalidad' width={4} />
                 <Form.Input label='Fecha de Nacimiento' placeholder='Fecha de Nacimiento' width={4} />
                 <Form.Select options={sexo} label='Sexo' placeholder='Sexo' width={4} error/>
               </Form.Group>
 
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Numero obra social' placeholder='Numero' width={12} />
                 <Form.Select options={obras} label='Nombre obra social' placeholder='Obra social' width={4} error />
               </Form.Group>
@@ -71,17 +71,17 @@ class FixedMenuLayout extends Component {
             
             <Header as="h3">Datos del domicilio</Header>
             <Segment.Group>
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Direccion' placeholder='Direccon' width={16} />
                 </Form.Group>
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Calle' placeholder='Calle' width={4} />
                   <Form.Input label='Numero' placeholder='Numero' width={4} />
                   <Form.Input label='Piso' placeholder='Piso' width={4} />
                   <Form.Input label='Dpto' placeholder='Dpto' width={4} />
                 </Form.Group>
 
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Provincia' placeholder='Provincia' width={6} />
                   <Form.Input label='Localidad' placeholder='Localidad' width={6} />
                   <Form.Input label='Codigo postal' placeholder='Codigo postal' width={4} />
@@ -90,16 +90,16 @@ class FixedMenuLayout extends Component {
             
             <Header as="h3">Datos del Familiar 1</Header>
             <Segment.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Nombres' placeholder='Nombres' width={8} />
                 <Form.Input label='Apellidos' placeholder='Apellidos' width={8} />     
               </Form.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Dni' placeholder='Dni' width={4} />
                 <Form.Input label='Nacionalidad' placeholder='Nacionalidad' width={6} />
                 <Form.Input label='Fecha de Nacimiento' placeholder='Fecha de Nacimiento' width={6} />
               </Form.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Tel. Contacto' placeholder='Telefono' width={4} />
                 <Form.Input label='Email' placeholder='Email' width={8} />
               </Form.Group>
@@ -115,17 +115,17 @@ class FixedMenuLayout extends Component {
               </Form.Group>
               <Segment>
               <Header as="h4">Domiclio</Header>
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Direccion' placeholder='Direccon' width={16} />
                 </Form.Group>
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Calle' placeholder='Calle' width={4} />
                   <Form.Input label='Numero' placeholder='Numero' width={4} />
                   <Form.Input label='Piso' placeholder='Piso' width={4} />
                   <Form.Input label='Dpto' placeholder='Dpto' width={4} />
                 </Form.Group>
 
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Provincia' placeholder='Provincia' width={6} />
                   <Form.Input label='Localidad' placeholder='Localidad' width={6} />
                   <Form.Input label='Codigo postal' placeholder='Codigo postal' width={4} />
@@ -135,16 +135,16 @@ class FixedMenuLayout extends Component {
 
             <Header as="h3">Datos del Familiar 2</Header>
             <Segment.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Nombres' placeholder='Nombres' width={8} />
                 <Form.Input label='Apellidos' placeholder='Apellidos' width={8} />     
               </Form.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Dni' placeholder='Dni' width={4} />
                 <Form.Input label='Nacionalidad' placeholder='Nacionalidad' width={6} />
                 <Form.Input label='Fecha de Nacimiento' placeholder='Fecha de Nacimiento' width={6} />
               </Form.Group>
-              <Form.Group style={{ margin: '2em' }}>
+              <Form.Group style={{ margin: '1em' }}>
                 <Form.Input label='Tel. Contacto' placeholder='Telefono' width={4} />
                 <Form.Input label='Email' placeholder='Email' width={8} />
               </Form.Group>
@@ -160,17 +160,17 @@ class FixedMenuLayout extends Component {
               </Form.Group>
               <Segment>
               <Header as="h4">Domiclio</Header>
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Direccion' placeholder='Direccon' width={16} />
                 </Form.Group>
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Calle' placeholder='Calle' width={4} />
                   <Form.Input label='Numero' placeholder='Numero' width={4} />
                   <Form.Input label='Piso' placeholder='Piso' width={4} />
                   <Form.Input label='Dpto' placeholder='Dpto' width={4} />
                 </Form.Group>
 
-                <Form.Group style={{ margin: '2em' }}>
+                <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Provincia' placeholder='Provincia' width={6} />
                   <Form.Input label='Localidad' placeholder='Localidad' width={6} />
                   <Form.Input label='Codigo postal' placeholder='Codigo postal' width={4} />

@@ -12,45 +12,9 @@ import {
 import Menubar from './components/menubar'
 
 class Pacientes extends Component {
-  constructor() {
-    super();
-    this.state ={
-      username: ''
-    }
-    this.Prueba = this.Prueba.bind(this);
-  }
-
-  Prueba() {
-    fetch('http://localhost:5000/api/obrasociales/'+document.getElementById('identificacion').value)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({username: data.nombre});
-        console.log(this.state.username.nombre);
-      });
-  }
-
-
-  BuscarPaciente() {
-    fetch('http://localhost:5000/api/obrasociales/1', {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        window.M.toast({html: 'Task Saved'});
-        this.setState({title: '', description: ''});
-        this.fetchTasks();
-      })
-      .catch(err => console.error(err));
-  }
-
 
   render() {
+
     const options = [
       { key: 'p', text: 'padre', value: 'padre' },
       { key: 'm', text: 'madre', value: 'madre' },
@@ -67,22 +31,25 @@ class Pacientes extends Component {
       { key: 'm', text: 'masculino', value: 'masculino' },
       { key: 'f', text: 'femenino', value: 'femenino' },
     ];
-
+    
     return(
       <div>
-        <Menubar>
-          <Segment color="red" style={{ margin: '7em' }}>
-              <Header as="h3">Busqueda de paciente:</Header>
+        <Menubar />
+
+        <Segment color="red" style={{ margin: '7em' }}>
+              <Header as="h3">Busqueda de Tutor:</Header>
               <Form>
                 <Segment.Group>
                   <Form.Group style={{ margin: '1em' }}>
-                    <Form.Input label='Numero de documento' placeholder='Dni del paciente' width={8} />
-                    <Form.Input label='Id' placeholder='Id del paciente' width={8}  id='identificacion'/>     
+                    <Form.Input label='Numero de documento' placeholder='Dni del tutor' width={8} />
+                    <Form.Input label='Id' placeholder='Id del paciente' width={8} />     
                   </Form.Group>
 
                   <Form.Group style={{ margin: '1em' }}>
-                    <Button>Buscar</Button>
+                    <Button >Buscar</Button>
+                    <Header as="h3"></Header>
                   </Form.Group>
+
                 </Segment.Group>
               </Form>
         </Segment>
@@ -90,7 +57,7 @@ class Pacientes extends Component {
         <Header as="h3" textAlign="center">Resultados encontrados</Header>
 
         <Segment color="red" style={{ margin: '0em 7em' }}>
-          <Header as="h3">Paciente: datos personales</Header>
+          <Header as="h3">Tutor: datos personales</Header>
           <Form>
             <Segment.Group>
               <Form.Group style={{ margin: '1em' }}>
@@ -108,13 +75,14 @@ class Pacientes extends Component {
                 <Form.Input label='Numero obra social' placeholder='Numero' width={12} />
                 <Form.Select options={obras} label='Nombre obra social' placeholder='Obra social' width={4} error />
               </Form.Group>
+
               <Form.Group style={{ margin: '1em' }}>
                   <Button>Guardar cambios</Button>
               </Form.Group>
-              
+
             </Segment.Group>
             
-            <Header as="h3">Paciente: datos del domicilio</Header>
+            <Header as="h3">Tutor: datos del domicilio</Header>
             <Segment.Group>
                 <Form.Group style={{ margin: '1em' }}>
                   <Form.Input label='Direccion' placeholder='Direccon' width={16} />
@@ -194,7 +162,6 @@ class Pacientes extends Component {
               </List>
             </Container>
           </Segment>
-        </Menubar>
       </div>
     )
   }
