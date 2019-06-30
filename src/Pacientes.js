@@ -1,73 +1,119 @@
 import React, {Component} from 'react'
-import {
-  Button,
-  Container,
-  Divider,
-  Form,
-  Grid,
-  Header,
-  List,
-  Segment,
-} from 'semantic-ui-react'
+import {Button, Container, Divider, Form, Grid, Header, List, Segment} from 'semantic-ui-react'
 import Menubar from './components/menubar'
 
 class Pacientes extends Component {
   constructor() {
     super();
     this.state ={
-      username: ''
+      pacientes: [],
+      obras: [],
+      domicilios: [],
+      id:"",
+      dni: "",
+      nombre: "",
+      apellido: "",
+      fechaNacimiento: "",
+      sexo: "",
+      nacionalidad: "",
+      email: "noposee@hotmail.com",
+      fechaAlta: "11/11/1111",
+      fechaBaja: "11/11/1111",
+      numeroAfiliado: "",
+      obraSocialId: "",
+      idDomicilio: "",
+      calle: "",
+      numero: "",
+      piso: "",
+      dpto: "",
+      codigoPostal: "",
+      localidad: "",
+      provincia: "",
+      pais: "",
+      personaId: ""
     }
-    this.Prueba = this.Prueba.bind(this);
+    this.setForm=this.setForm.bind(this);
+    this.setDom=this.setDom.bind(this);
   }
 
-  Prueba() {
-    fetch('http://localhost:5000/api/obrasociales/'+document.getElementById('identificacion').value)
+  componentDidMount() {
+    this.fetchObraSociales();
+    this.fetchPacientes();
+    this.fetchDomicilios();
+  }
+
+  fetchObraSociales() {
+    fetch('http://localhost:5000/api/obrasociales')
       .then(res => res.json())
       .then(data => {
-        this.setState({username: data.nombre});
-        console.log(this.state.username.nombre);
+        this.setState({obras: data});
       });
   }
 
-
-  BuscarPaciente() {
-    fetch('http://localhost:5000/api/obrasociales/1', {
-      method: 'POST',
-      body: JSON.stringify(this.state),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+  fetchPacientes() {
+    fetch('http://localhost:5000/api/pacientes')
       .then(res => res.json())
       .then(data => {
-        console.log(data);
-        window.M.toast({html: 'Task Saved'});
-        this.setState({title: '', description: ''});
-        this.fetchTasks();
-      })
-      .catch(err => console.error(err));
+        this.setState({pacientes: data});
+      });
   }
 
+  fetchDomicilios() {
+    fetch('http://localhost:5000/api/domicilios')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({domicilios: data});
+      });
+  }
 
+  setForm() {
+    this.state.pacientes.map(paciente => {
+      if(paciente.dni == (document.getElementById('dni').value)) {
+        this.setState({
+          id: paciente.id,
+          dni: paciente.dni,
+          nombre: paciente.nombre,
+          apellido: paciente.apellido,
+          fechaNacimiento: paciente.fechaNacimiento,
+          sexo: paciente.Sexo,
+          nacionalidad: paciente.nacionalidad,
+          email: "noposee@hotmail.com",
+          fechaAlta: "11/11/1111",
+          fechaBaja: "11/11/1111",
+          numeroAfiliado: paciente.numeroAfiliado,
+          obraSocialId: paciente.obraSocialId
+        })
+        this.setDom();
+      } else {
+        console.log('paciente no encontrado')
+      }
+    }
+    )
+  }
+
+  setDom() {
+    this.state.domicilios.map(domicilio => {
+      if (domicilio.personaId == this.state.id) {
+        this.setState({
+          idDomicilio: domicilio.id,
+          calle: domicilio.calle,
+          numero: domicilio.numero,
+          piso: domicilio.piso,
+          dpto: domicilio.dpto,
+          codigoPostal: domicilio.codigoPostal,
+          localidad: domicilio.localidad,
+          provincia: domicilio.provincia,
+          pais: domicilio.nacionalidad,
+          personaId: domicilio.personaId
+        })
+      } else {
+        console.log('no encontrado asdasd'+ this.state.dni)
+      }
+    })
+  }
+
+  
   render() {
-    const options = [
-      { key: 'p', text: 'padre', value: 'padre' },
-      { key: 'm', text: 'madre', value: 'madre' },
-      { key: 't', text: 'tio', value: 'tio' },
-      { key: 'a', text: 'abuelo', value: 'abuelo' },
-    ];
-
-    const obras = [
-      { key: 'n', text: 'no tiene', value: 'no tiene' },
-      { key: 's', text: 'si tiene', value: 'si tiene' },
-    ];
-
-    const sexo = [
-      { key: 'm', text: 'masculino', value: 'masculino' },
-      { key: 'f', text: 'femenino', value: 'femenino' },
-    ];
-
     return(
       <div>
         <Menubar>
@@ -76,12 +122,11 @@ class Pacientes extends Component {
               <Form>
                 <Segment.Group>
                   <Form.Group style={{ margin: '1em' }}>
-                    <Form.Input label='Numero de documento' placeholder='Dni del paciente' width={8} />
-                    <Form.Input label='Id' placeholder='Id del paciente' width={8}  id='identificacion'/>     
+                    <Form.Input id='dni' label='Numero de documento' placeholder='Dni del paciente' width={8} />
+                    <Form.Input id='identificacion' label='Id' placeholder='Id del paciente' width={8} />     
                   </Form.Group>
-
                   <Form.Group style={{ margin: '1em' }}>
-                    <Button>Buscar</Button>
+                    <Button onClick={this.setForm}>Buscar</Button>
                   </Form.Group>
                 </Segment.Group>
               </Form>
@@ -93,48 +138,51 @@ class Pacientes extends Component {
           <Header as="h3">Paciente: datos personales</Header>
           <Form>
             <Segment.Group>
-              <Form.Group style={{ margin: '1em' }}>
-                <Form.Input label='Nombres' placeholder='Nombres' width={8} />
-                <Form.Input label='Apellidos' placeholder='Apellidos' width={8} />     
+            <Form.Group style={{ margin: '1em' }}>
+                <Form.Input name='nombre' label='Nombres' placeholder='Nombres' value={this.state.nombre} onChange={this.handleChange} width={8} />
+                <Form.Input name='apellido' label='Apellidos' placeholder='Apellidos' value={this.state.apellido} onChange={this.handleChange} width={8} />     
               </Form.Group>
               <Form.Group style={{ margin: '1em' }}>
-                <Form.Input label='Dni' placeholder='Dni' width={4} />
-                <Form.Input label='Nacionalidad' placeholder='Nacionalidad' width={4} />
-                <Form.Input label='Fecha de Nacimiento' placeholder='Fecha de Nacimiento' width={4} />
-                <Form.Select options={sexo} label='Sexo' placeholder='Sexo' width={4} error/>
-              </Form.Group>
-
-              <Form.Group style={{ margin: '1em' }}>
-                <Form.Input label='Numero obra social' placeholder='Numero' width={12} />
-                <Form.Select options={obras} label='Nombre obra social' placeholder='Obra social' width={4} error />
+                <Form.Input name='dni' label='Dni' placeholder='Dni' value={this.state.dni} onChange={this.handleChange} width={4} />
+                <Form.Input name='nacionalidad' label='Nacionalidad' placeholder='Nacionalidad' value={this.state.nacionalidad} onChange={this.handleChange} width={4} />
+                <Form.Input name='fechaNacimiento' type='datetime-local' label='Fecha de Nacimiento' placeholder='Fecha de Nacimiento' value={this.state.fechaNacimiento} onChange={this.handleChange} width={4} />
+                <Form.Field id='sexo' label='Sexo' placeholder='Sexo' control='select' width={4} error>
+                  <option value='masculino'>masculino</option>
+                  <option value='femenino'>femenino</option>
+                </Form.Field>
               </Form.Group>
               <Form.Group style={{ margin: '1em' }}>
-                  <Button>Guardar cambios</Button>
+                <Form.Input name='numeroAfiliado' label='Numero obra social' placeholder='Numero' value={this.state.numeroAfiliado} onChange={this.handleChange} width={12} />
+                <Form.Field id='obra' label='Obra social' placeholder='Obra social' control='select' width={4} error>
+                  {
+                   this.state.obras.map(obra => {
+                    return(<option key={obra.id} value={obra.id}>{obra.nombre}</option>)
+                  }) 
+                  }
+                </Form.Field>
               </Form.Group>
-              
             </Segment.Group>
             
             <Header as="h3">Paciente: datos del domicilio</Header>
             <Segment.Group>
                 <Form.Group style={{ margin: '1em' }}>
-                  <Form.Input label='Direccion' placeholder='Direccon' width={16} />
-                </Form.Group>
-                <Form.Group style={{ margin: '1em' }}>
-                  <Form.Input label='Calle' placeholder='Calle' width={4} />
-                  <Form.Input label='Numero' placeholder='Numero' width={4} />
-                  <Form.Input label='Piso' placeholder='Piso' width={4} />
-                  <Form.Input label='Dpto' placeholder='Dpto' width={4} />
+                  <Form.Input label='Calle' placeholder='Calle' value={this.state.calle} width={4} />
+                  <Form.Input label='Numero' placeholder='Numero' value={this.state.numero} width={4} />
+                  <Form.Input label='Piso' placeholder='Piso' value={this.state.piso} width={4} />
+                  <Form.Input label='Dpto' placeholder='Dpto' value={this.state.dpto} width={4} />
                 </Form.Group>
 
                 <Form.Group style={{ margin: '1em' }}>
-                  <Form.Input label='Provincia' placeholder='Provincia' width={6} />
-                  <Form.Input label='Localidad' placeholder='Localidad' width={6} />
-                  <Form.Input label='Codigo postal' placeholder='Codigo postal' width={4} />
+                  <Form.Input label='Provincia' placeholder='Provincia' value={this.state.provincia} width={6} />
+                  <Form.Input label='Localidad' placeholder='Localidad' value={this.state.localidad} width={6} />
+                  <Form.Input label='Codigo postal' placeholder='Codigo postal' value={this.state.codigoPostal} width={4} />
                 </Form.Group>
+            </Segment.Group>
 
-                <Form.Group style={{ margin: '1em' }}>
-                  <Button>Guardar cambios</Button>
-                </Form.Group>
+            <Segment.Group>
+              <Form.Group style={{ margin: '1em' }}>
+                <Button>Guardar cambios</Button>
+              </Form.Group>
             </Segment.Group>
           </Form>
         </Segment>

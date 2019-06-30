@@ -3,7 +3,6 @@ import {
   Container,
   Header,
   Icon,
-  Grid,
   Menu,
 } from 'semantic-ui-react'
 

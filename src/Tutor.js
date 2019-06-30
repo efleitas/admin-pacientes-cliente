@@ -1,27 +1,10 @@
 import React, {Component} from 'react'
-import {
-  Button,
-  Container,
-  Divider,
-  Form,
-  Grid,
-  Header,
-  List,
-  Segment,
-} from 'semantic-ui-react'
+import {Button, Container, Divider, Form, Grid, Header, List, Segment } from 'semantic-ui-react'
 import Menubar from './components/menubar'
 
 class Pacientes extends Component {
 
   render() {
-
-    const options = [
-      { key: 'p', text: 'padre', value: 'padre' },
-      { key: 'm', text: 'madre', value: 'madre' },
-      { key: 't', text: 'tio', value: 'tio' },
-      { key: 'a', text: 'abuelo', value: 'abuelo' },
-    ];
-
     const obras = [
       { key: 'n', text: 'no tiene', value: 'no tiene' },
       { key: 's', text: 'si tiene', value: 'si tiene' },
