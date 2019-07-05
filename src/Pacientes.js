@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import {Button, Container, Divider, Form, Grid, Header, List, Segment} from 'semantic-ui-react'
+import {Button, Form, Header, Segment} from 'semantic-ui-react'
 import Menubar from './components/menubar'
+import Footer from './components/footer'
 
 class Pacientes extends Component {
   constructor() {
@@ -33,7 +34,15 @@ class Pacientes extends Component {
       personaId: ""
     }
     this.setForm=this.setForm.bind(this);
-    this.setDom=this.setDom.bind(this);
+    this.editPaciente=this.editPaciente.bind(this);
+    this.handleChange=this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({
+      [name]: value
+    });
   }
 
   componentDidMount() {
@@ -83,7 +92,22 @@ class Pacientes extends Component {
           numeroAfiliado: paciente.numeroAfiliado,
           obraSocialId: paciente.obraSocialId
         })
-        this.setDom();
+        this.state.domicilios.map(domicilio => {
+          if (domicilio.personaId == this.state.id) {
+            this.setState({
+              idDomicilio: domicilio.id,
+              calle: domicilio.calle,
+              numero: domicilio.numero,
+              piso: domicilio.piso,
+              dpto: domicilio.dpto,
+              codigoPostal: domicilio.codigoPostal,
+              localidad: domicilio.localidad,
+              provincia: domicilio.provincia,
+              pais: domicilio.nacionalidad,
+              personaId: domicilio.personaId
+            })
+          }
+        })
       } else {
         console.log('paciente no encontrado')
       }
@@ -91,50 +115,105 @@ class Pacientes extends Component {
     )
   }
 
-  setDom() {
-    this.state.domicilios.map(domicilio => {
-      if (domicilio.personaId == this.state.id) {
-        this.setState({
-          idDomicilio: domicilio.id,
-          calle: domicilio.calle,
-          numero: domicilio.numero,
-          piso: domicilio.piso,
-          dpto: domicilio.dpto,
-          codigoPostal: domicilio.codigoPostal,
-          localidad: domicilio.localidad,
-          provincia: domicilio.provincia,
-          pais: domicilio.nacionalidad,
-          personaId: domicilio.personaId
-        })
-      } else {
-        console.log('no encontrado asdasd'+ this.state.dni)
+  editPaciente() {
+    fetch(`http://localhost:5000/api/pacientes/${this.state.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        fechaAlta : this.state.fechaAlta,
+        fechaBaja : this.state.fechaBaja,
+        numeroAfiliado : this.state.numeroAfiliado,
+        tutores: "",
+        obraSocialId : document.getElementById('obra').options[document.getElementById('obra').selectedIndex].value,
+        dni : this.state.dni,
+        nombre : this.state.nombre,
+        apellido : this.state.apellido,
+        fechaNacimiento : this.state.fechaNacimiento,
+        Sexo : document.getElementById('sexo').options[document.getElementById('sexo').selectedIndex].text,
+        nacionalidad : this.state.nacionalidad,
+        email : this.state.email,
+        domicilios: "",
+        id: this.state.id
+      }),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       }
     })
+    .then(data => {
+      fetch(`http://localhost:5000/api/domicilios/${this.state.idDomicilio}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          calle: this.state.calle,
+          numero: this.state.numero,
+          piso: this.state.piso,
+          dpto: this.state.dpto,
+          codigoPostal: this.state.codigoPostal,
+          localidad: this.state.localidad,
+          provincia: this.state.provincia,
+          nacionalidad: this.state.pais,
+          personaId: this.state.id,
+          id: this.state.idDomicilio
+        }),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(dom => {
+        this.setState({
+          id:"",
+          dni: "",
+          nombre: "",
+          apellido: "",
+          fechaNacimiento: "",
+          sexo: "",
+          nacionalidad: "",
+          email: "noposee@hotmail.com",
+          fechaAlta: "11/11/1111",
+          fechaBaja: "11/11/1111",
+          numeroAfiliado: "",
+          obraSocialId: "",
+          idDomicilio: "",
+          calle: "",
+          numero: "",
+          piso: "",
+          dpto: "",
+          codigoPostal: "",
+          localidad: "",
+          provincia: "",
+          pais: "",
+          personaId: ""
+        })
+        alert('Los datos del paciente fueron modificados satisfactoriamente');
+      })
+    })
+    .catch(err => console.error(err));  
   }
-
   
   render() {
     return(
       <div>
         <Menubar>
-          <Segment color="red" style={{ margin: '7em' }}>
-              <Header as="h3">Busqueda de paciente:</Header>
+        <Header as="h2" color="red" textAlign="center" style={{ marginTop: '3%' }}>
+        Busqueda de paciente
+        </Header>
+          <Segment color="red" style={{ margin: '1% 5%'}}>
+              <Header as="h3">Datos de busqueda</Header>
               <Form>
                 <Segment.Group>
                   <Form.Group style={{ margin: '1em' }}>
-                    <Form.Input id='dni' label='Numero de documento' placeholder='Dni del paciente' width={8} />
-                    <Form.Input id='identificacion' label='Id' placeholder='Id del paciente' width={8} />     
+                    <Form.Input type='number' id='dni' label='Numero de documento' placeholder='Dni del paciente' width={16} />
                   </Form.Group>
                   <Form.Group style={{ margin: '1em' }}>
-                    <Button onClick={this.setForm}>Buscar</Button>
+                    <Button color='red' onClick={this.setForm}>Buscar</Button>
                   </Form.Group>
                 </Segment.Group>
               </Form>
         </Segment>
 
-        <Header as="h3" textAlign="center">Resultados encontrados</Header>
+        <Header as="h2" color="red" textAlign="center">Resultados encontrados</Header>
 
-        <Segment color="red" style={{ margin: '0em 7em' }}>
+        <Segment color="red" style={{ margin: '1% 5%'}}>
           <Header as="h3">Paciente: datos personales</Header>
           <Form>
             <Segment.Group>
@@ -143,7 +222,7 @@ class Pacientes extends Component {
                 <Form.Input name='apellido' label='Apellidos' placeholder='Apellidos' value={this.state.apellido} onChange={this.handleChange} width={8} />     
               </Form.Group>
               <Form.Group style={{ margin: '1em' }}>
-                <Form.Input name='dni' label='Dni' placeholder='Dni' value={this.state.dni} onChange={this.handleChange} width={4} />
+                <Form.Input type='number' name='dni' label='Dni' placeholder='Dni' value={this.state.dni} onChange={this.handleChange} width={4} />
                 <Form.Input name='nacionalidad' label='Nacionalidad' placeholder='Nacionalidad' value={this.state.nacionalidad} onChange={this.handleChange} width={4} />
                 <Form.Input name='fechaNacimiento' type='datetime-local' label='Fecha de Nacimiento' placeholder='Fecha de Nacimiento' value={this.state.fechaNacimiento} onChange={this.handleChange} width={4} />
                 <Form.Field id='sexo' label='Sexo' placeholder='Sexo' control='select' width={4} error>
@@ -152,7 +231,7 @@ class Pacientes extends Component {
                 </Form.Field>
               </Form.Group>
               <Form.Group style={{ margin: '1em' }}>
-                <Form.Input name='numeroAfiliado' label='Numero obra social' placeholder='Numero' value={this.state.numeroAfiliado} onChange={this.handleChange} width={12} />
+                <Form.Input type='number' name='numeroAfiliado' label='Numero obra social' placeholder='Numero' value={this.state.numeroAfiliado} onChange={this.handleChange} width={12} />
                 <Form.Field id='obra' label='Obra social' placeholder='Obra social' control='select' width={4} error>
                   {
                    this.state.obras.map(obra => {
@@ -166,82 +245,29 @@ class Pacientes extends Component {
             <Header as="h3">Paciente: datos del domicilio</Header>
             <Segment.Group>
                 <Form.Group style={{ margin: '1em' }}>
-                  <Form.Input label='Calle' placeholder='Calle' value={this.state.calle} width={4} />
-                  <Form.Input label='Numero' placeholder='Numero' value={this.state.numero} width={4} />
-                  <Form.Input label='Piso' placeholder='Piso' value={this.state.piso} width={4} />
-                  <Form.Input label='Dpto' placeholder='Dpto' value={this.state.dpto} width={4} />
+                  <Form.Input name='calle' label='Calle' placeholder='Calle' value={this.state.calle} onChange={this.handleChange} width={4} />
+                  <Form.Input type='number' name='numero' label='Numero' placeholder='Numero' value={this.state.numero} onChange={this.handleChange} width={4} />
+                  <Form.Input type='number' name='piso' label='Piso' placeholder='Piso' value={this.state.piso} onChange={this.handleChange} width={4} />
+                  <Form.Input type='number' name='dpto' label='Dpto' placeholder='Dpto' value={this.state.dpto} onChange={this.handleChange} width={4} />
                 </Form.Group>
 
                 <Form.Group style={{ margin: '1em' }}>
-                  <Form.Input label='Provincia' placeholder='Provincia' value={this.state.provincia} width={6} />
-                  <Form.Input label='Localidad' placeholder='Localidad' value={this.state.localidad} width={6} />
-                  <Form.Input label='Codigo postal' placeholder='Codigo postal' value={this.state.codigoPostal} width={4} />
+                  <Form.Input name='provincia' label='Provincia' placeholder='Provincia' value={this.state.provincia} onChange={this.handleChange} width={6} />
+                  <Form.Input name='localidad' label='Localidad' placeholder='Localidad' value={this.state.localidad} onChange={this.handleChange} width={6} />
+                  <Form.Input type='number' name='codigoPostal' label='Codigo postal' placeholder='Codigo postal' value={this.state.codigoPostal} onChange={this.handleChange} width={4} />
                 </Form.Group>
             </Segment.Group>
 
             <Segment.Group>
               <Form.Group style={{ margin: '1em' }}>
-                <Button>Guardar cambios</Button>
+                <Button color='red' onClick={this.editPaciente}>Guardar cambios</Button>
+                <Button color='red'>Cancelar cambios</Button>
               </Form.Group>
             </Segment.Group>
           </Form>
         </Segment>
-
-          <Segment inverted vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
-            <Container textAlign='center'>
-              <Grid divided inverted stackable>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Group 1' />
-                  <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    <List.Item as='a'>Link Three</List.Item>
-                    <List.Item as='a'>Link Four</List.Item>
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Group 2' />
-                  <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    <List.Item as='a'>Link Three</List.Item>
-                    <List.Item as='a'>Link Four</List.Item>
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={3}>
-                  <Header inverted as='h4' content='Group 3' />
-                  <List link inverted>
-                    <List.Item as='a'>Link One</List.Item>
-                    <List.Item as='a'>Link Two</List.Item>
-                    <List.Item as='a'>Link Three</List.Item>
-                    <List.Item as='a'>Link Four</List.Item>
-                  </List>
-                </Grid.Column>
-                <Grid.Column width={7}>
-                  <Header inverted as='h4' content='Footer Header' />
-                  <p>
-                    Extra space for a call to action inside the footer that could help re-engage users.
-                  </p>
-                </Grid.Column>
-              </Grid>
-
-              <Divider inverted section />
-              <List horizontal inverted divided link size='small'>
-                <List.Item as='a' href='#'>
-                  Site Map
-                </List.Item>
-                <List.Item as='a' href='#'>
-                  Contact Us
-                </List.Item>
-                <List.Item as='a' href='#'>
-                  Terms and Conditions
-                </List.Item>
-                <List.Item as='a' href='#'>
-                  Privacy Policy
-                </List.Item>
-              </List>
-            </Container>
-          </Segment>
+        
+        <Footer /> 
         </Menubar>
       </div>
     )

@@ -5,6 +5,7 @@ import Home from './Home.js';
 import Administracion from './Administracion.js';
 import Pacientes from './Pacientes.js';
 import ObraSociales from './ObraSociales.js';
+import ListaPacientes from './ListaPacientes.js';
 import Page404 from './Page404.js';
 import Tutor from './Tutor';
 
@@ -16,6 +17,7 @@ const AppRoutes = () =>
 			<Route path="/pacientes" exact strict component={Pacientes} />
 			<Route path="/tutor" exact strict component={Tutor} />
 			<Route path="/obrasociales" exact strict component={ObraSociales} />
+			<Route path="/listapacientes" exact strict component={ListaPacientes} />
 			<Route component={Page404} />			
 		</Switch>
 	</App>;

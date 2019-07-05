@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import { Button, Container, Divider, Form, Grid, Header, Icon, List, Segment } from 'semantic-ui-react'
+import { Button, Form, Header, Icon, List, Segment } from 'semantic-ui-react'
 import Menubar from './components/menubar'
+import Footer from './components/footer'
 
 class Pacientes extends Component {
   constructor() {
@@ -48,7 +49,8 @@ class Pacientes extends Component {
           console.log(data);
           this.fetchObraSociales();
           this.setState({id: '', nombre: '', direccion: '', telefono: '', email: ''})
-        });
+        })
+        .catch(err => {console.log(err)})
   }
 
   editObraSocial() {
@@ -68,9 +70,9 @@ class Pacientes extends Component {
       }
       })
       .then(data => {
-        console.log(data);
         this.fetchObraSociales();
-        this.setState({id: '', nombre: '', direccion: '', telefono: '', email: ''})
+        this.setState({id: '', nombre: '', direccion: '', telefono: '', email: ''});
+        alert('Los datos de la obra social fueron modificados correctamente');
       })
       .catch(err => console.error(err));
     } else {
@@ -92,7 +94,11 @@ class Pacientes extends Component {
           console.log(data);
           this.fetchObraSociales();
           this.setState({id: '', nombre: '', direccion: '', telefono: '', email: ''})
+          alert('La obra social fue dada de alta exitosamente')
         })
+        .catch(err => {
+          alert('Debe ingresar todos los datos solicitados en el formulario')
+        });
     }
     
   }
@@ -102,8 +108,8 @@ class Pacientes extends Component {
       <div>
         <Menubar />
 
-        <Header as="h2" color="red" textAlign="center" style={{ marginTop: '5em' }}>Listado de obras sociales</Header>
-        <Segment color="red" style={{ margin: '2em 7em' }}>
+        <Header as="h2" color="red" textAlign="center" style={{ marginTop: '3%' }}>Listado de obras sociales</Header>
+        <Segment color="red" style={{ margin: '1% 5%'}}>
           <Header as="h3">Nombre:</Header>
           <List divided verticalAlign='middle'>
             { 
@@ -127,10 +133,10 @@ class Pacientes extends Component {
           </List>      
         </Segment>
 
-        <Header as="h2" color="red" textAlign="center">Obra social</Header>
-        <Segment color="red" style={{ margin: '2em 7em' }}>
+        <Header as="h2" color="red" textAlign="center">Obra social: Alta / Modificacion</Header>
+        <Segment color="red" style={{ margin: '1% 5%'}}>
           <Header as="h3">Obra social: información de referencia</Header>
-          <Form>
+          <Form style={{backgroundColor: '#fff'}}>
             <Segment.Group>
               <Form.Group style={{ margin: '1em' }}>
                 <Form.Input name='nombre'
@@ -138,7 +144,7 @@ class Pacientes extends Component {
                 placeholder='Nombre obra social' 
                 value={this.state.nombre} 
                 onChange={this.handleChange} 
-                width={8} />     
+                width={8}/>     
               </Form.Group>
 
               <Form.Group style={{ margin: '1em' }}>
@@ -150,11 +156,13 @@ class Pacientes extends Component {
                 width={8} />
                 <Form.Input name='telefono'
                 label='Telefono' 
-                placeholder='Telefono' 
+                placeholder='Telefono'
+                type="number"
                 value={this.state.telefono} 
                 onChange={this.handleChange} 
-                width={4} />
-                <Form.Input name='email'
+                width={4}/>
+                <Form.Input type='email'
+                name='email'
                 label='Correo electronico' 
                 placeholder='Correo electronico' 
                 onChange={this.handleChange} 
@@ -163,67 +171,14 @@ class Pacientes extends Component {
               </Form.Group>
 
               <Form.Group style={{ margin: '1em' }}>
-                  <Button onClick={() => this.editObraSocial()} >Guardar cambios</Button>
+                  <Button color='red' onClick={() => this.editObraSocial()} >Guardar cambios</Button>
+                  <Button color='red'>Cancelar cambios</Button>
               </Form.Group>
             </Segment.Group>
           </Form>
         </Segment>
 
-        <Segment inverted vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
-          <Container textAlign='center'>
-            <Grid divided inverted stackable>
-              <Grid.Column width={3}>
-                <Header inverted as='h4' content='Group 1' />
-                <List link inverted>
-                  <List.Item as='a'>Link One</List.Item>
-                  <List.Item as='a'>Link Two</List.Item>
-                  <List.Item as='a'>Link Three</List.Item>
-                  <List.Item as='a'>Link Four</List.Item>
-                </List>
-              </Grid.Column>
-              <Grid.Column width={3}>
-                <Header inverted as='h4' content='Group 2' />
-                <List link inverted>
-                  <List.Item as='a'>Link One</List.Item>
-                  <List.Item as='a'>Link Two</List.Item>
-                  <List.Item as='a'>Link Three</List.Item>
-                  <List.Item as='a'>Link Four</List.Item>
-                </List>
-              </Grid.Column>
-              <Grid.Column width={3}>
-                <Header inverted as='h4' content='Group 3' />
-                <List link inverted>
-                  <List.Item as='a'>Link One</List.Item>
-                  <List.Item as='a'>Link Two</List.Item>
-                  <List.Item as='a'>Link Three</List.Item>
-                  <List.Item as='a'>Link Four</List.Item>
-                </List>
-              </Grid.Column>
-              <Grid.Column width={7}>
-                <Header inverted as='h4' content='Footer Header' />
-                <p>
-                  Extra space for a call to action inside the footer that could help re-engage users.
-                </p>
-              </Grid.Column>
-            </Grid>
-
-            <Divider inverted section />
-            <List horizontal inverted divided link size='small'>
-              <List.Item as='a' href='#'>
-                Site Map
-              </List.Item>
-              <List.Item as='a' href='#'>
-                Contact Us
-              </List.Item>
-              <List.Item as='a' href='#'>
-                Terms and Conditions
-              </List.Item>
-              <List.Item as='a' href='#'>
-                Privacy Policy
-              </List.Item>
-            </List>
-          </Container>
-        </Segment>
+        <Footer />
       </div>
     )
   }
